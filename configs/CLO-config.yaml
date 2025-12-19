@@ -63,7 +63,7 @@ paths:
   theta_lut: utils/LUTs/theta_lut.npy
   segmentation_ckpt_tpl: utils/learning_models/D{d}/segmentation_network
   predictor_ckpt_tpl: utils/precision_predictors/D{d}/precision_predictor
-  data_output_dir: ./simulation_results
+  data_output_dir: ./sim_res
   dataset_path: ./dataset/cityscapes
 
 threshold:

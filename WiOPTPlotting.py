@@ -1,4 +1,5 @@
-import os
+import os, sys
+
 import pickle
 from collections import Counter
 from itertools import combinations
@@ -8,8 +9,9 @@ from matplotlib import pyplot as plt
 from matplotlib import rcParams
 from segmentation_models_pytorch.utils.functional import precision
 from scipy.io import savemat
-from simulation_results import Simulation
-
+#from utils.simulation_results import Simulation
+import utils.simulation_results as sr
+sys.modules["simulation_results"] = sr
 rcParams['mathtext.fontset'] = 'stix'
 rcParams['font.family'] = 'STIXGeneral'
 rcParams['font.size'] = 14
@@ -23,10 +25,9 @@ def plot_time_to_reliability(path_to_load,eta_array,window_array,t_sim,**kwargs)
     constraint = kwargs.get('constraint',1e-1)
     theta1 = kwargs.get('theta1',5e-1)
     n_rel = kwargs.get('n_rel',7)
-    m = kwargs.get('m',0)
+
     M = kwargs.get('M',1)
-    B = kwargs.get('B',0)
-    b = kwargs.get('b',1)
+
     enable_label_plotting = kwargs.get('enable_label_plotting',False)
     enable_bound_plot=kwargs.get('bound',False)
     gamma = kwargs.get('gamma',1)
@@ -62,48 +63,33 @@ def plot_time_to_reliability(path_to_load,eta_array,window_array,t_sim,**kwargs)
                 for window in window_array[p]:
                     with open(fr"{path}/simulation_{float(eta)}_window_size_{window}_{r}.pkl", "rb") as input_file:
                         e = pickle.load(input_file)
-                        gamma = 5e-1
-                        theta1 = 5e-1
+                        gamma = e.gamma
+                        if e.theta1 is not None:
+                            theta1 = e.theta1
+
                         constraint = e.alpha
-                        #print(np.max(1-e.alpha_min))
+
                         if enable_bound_plot==True:
                             gamma = e.gamma
                             theta1 = e.theta1
 
-                        #alpha = np.max(e.alpha_max)
-                        #if (alpha!=None):
-                        #    if alpha<alpha_min:
-                        #        alpha_min = alpha
-
                         if frame_flag==True:
 
                             reliability_array = np.mean(e.average_reliability_over_multiple_decisions,axis=0)
-                            print(np.mean(e.reliability_per_frame))
                         else:
                             reliability_array = np.mean(e.average_reliability,axis=0)
 
-                        #reliability_array =zero_repeated_runs_np(reliability_array)
 
                         F = int(t_sim/window)
 
                         if frame_flag==True:
                             raxis=np.linspace(start=0,stop=F-1,num=F)
 
-
-                        color = color_array[i]
-
-
-                        axis = np.linspace(start=0,stop=F,num=F)
-
-
                         reliability_array = np.repeat(reliability_array,window)
 
 
                         upper_bound = np.divide(M  - theta1, gamma * raxis)
                         avg_reliability[r - 1, :] = reliability_array
-
-
-
 
                         if plot_per_rel == True:
                             if enable_label_plotting==True:
@@ -122,20 +108,12 @@ def plot_time_to_reliability(path_to_load,eta_array,window_array,t_sim,**kwargs)
         np.save(f'{output_dir}/reliability_plot.npy',avg_reliability)
 
     if plot_per_rel==False:
-       # plt.plot(np.repeat(lower_bound + constraint, window), linestyle='dashed')  # ,color=color)
         plt.plot(np.repeat(upper_bound + constraint, window), linestyle='dashed')  # ,color=color)
         avg = np.mean(avg_reliability,axis=0)
         std = np.std(avg_reliability,axis=0)
         plt.plot(avg,linewidth=2)
         plt.fill_between(np.linspace(start=1, stop=t_sim, num=t_sim), avg - std,
                          avg + std, color='g', alpha=0.6)
-    #0.13084500000000002
-    xx_rel = avg_reliability[0,300:]
-
-    rk = 0.13
-    max_viol = rk+0.05*rk
-    print(f'Outage probability: {float(np.sum(reliability_array[:]>(max_viol))/len(reliability_array[:]))}')
-    print(f'Average violation: {float(np.sum(np.maximum(0,reliability_array[:]-rk)))/np.sum(reliability_array[:]>rk)}')
 
     plt.hlines(xmin=0,xmax=t_sim,y=constraint,linestyles='dashed',linewidth=2,color='b')
     plt.xlabel("Time Slot Index [t]",fontsize=14)
@@ -201,10 +179,8 @@ def plot_energy_precision_trade_off(path_to_load,eta_array,window_size,t_sim,tra
 
 
 
-    trans_end_array = trans_end#*np.ones((eta_array.shape[1],len(window_array))).astype(np.int32)
+    trans_end_array = trans_end
 
-    #if window_array.ndim==1:
-    #    trans_end_array = trans_end_array.reshape(1,-1)
 
     label_array = ['CLO','LO']
     p=0
@@ -224,15 +200,11 @@ def plot_energy_precision_trade_off(path_to_load,eta_array,window_size,t_sim,tra
                         energy_tracker = e.power_consumption_over_time
 
                         precision_tracker = precision_tracker[trans_end_array[p,j]:,:]
-                        #precision_tracker = np.mean(precision_tracker,axis=1)
 
 
 
                         precision_tracker = precision_tracker[precision_tracker>=0]
 
-                        print(np.mean(precision_tracker))
-
-                        #precision_tracker = precision_tracker[::window]
 
                         precision_array[j] += (1-np.mean(precision_tracker))
                         energy_array[j] += np.mean(np.sum(np.sum(energy_tracker[trans_end_array[p,j]:,:,:],axis=2),axis=1))
@@ -241,7 +213,7 @@ def plot_energy_precision_trade_off(path_to_load,eta_array,window_size,t_sim,tra
                 j+=1
 
 
-            plt.plot( energy_array*0.05*1000,precision_array,marker='o', label=rf'{label_array[p]} $S={window}$')
+            plt.plot(energy_array*0.05*1000,precision_array,marker='o', label=rf'{label_array[p]} $S={window}$')
             if matlab_out is not None:
                 np.save(f'./{matlab_out}/energy_array_{window}_{label_array[p]}.npy', energy_array * 1e3)
                 np.save(f'./{matlab_out}/precision_array_{window}_{label_array[p]}.npy', precision_array)
@@ -249,7 +221,6 @@ def plot_energy_precision_trade_off(path_to_load,eta_array,window_size,t_sim,tra
 
         p+=1
     plt.legend()
-    #plt.title('CLO')
     plt.xlabel('System Power Consumption [mW]')
     plt.ylabel('Precision')
     plt.show()
@@ -257,15 +228,12 @@ def plot_energy_precision_trade_off(path_to_load,eta_array,window_size,t_sim,tra
 
 
 if __name__=="__main__":
+
     t_sim = 15000
     window_array = np.array([[10],[10]])
-
-
     trans_end_array = np.array([[14000,14000,14000,14000,14000,14000,13100],[14000,14000,14000,14000,14000,14000,14000]])
-
     eta_array = np.array([[0.25,0.3,0.4,0.42,0.6,0.6,0.8],[0.2,0.3,0.4,0.5,0.6,0.6,0.8]])
 
-    print(os.getcwd())
     print("Selection Menu")
     print("1 - Time to reliability")
     print("2 - Precision/Energy trade-off")
@@ -274,14 +242,18 @@ if __name__=="__main__":
 
     choice = int(input("What do you want to plot? "))
     matlab_out = './matlab'
-    #path = ['LOComparisons/alpha_est_2']#,'LOComparisons/CLOMultiUser/MinimalTopology/FNR013']
 
-    #path = ['LOComparisons/alpha_est_2']#,'LOComparisons/CLOMultiUser/MinimalTopology/FNR013']
-
-    path = ['./WiOPTSimCLO15k/','./WiOPTSimLyapunov15k/']
+    path = ['./sim_res/WiOPTSimCLO15k/','./sim_res/WiOPTSimLyapunov15k/']
 
     if choice==1:
-        plot_time_to_reliability(path, eta_array, window_array, t_sim,matlab_out=matlab_out,trans_end=0,n_rel=1,B=1,b=1,m=(0),M=(1+0.5),plot_per_rel=True,output_dir='./matlab_plotting',frame_flag=True)
+        method = int(input("Choose the method (1 - CLO, 2 - LO): "))
+        if method == 1:
+            path_to_load = f'{path[0]}/multiple_realizations'
+        else:
+            path_to_load = f'{path[1]}/multiple_realizations'
+        n_rel = int(input("Select the number of realizations to plot: "))
+        eta_array = np.array([[0.8]])
+        plot_time_to_reliability([path_to_load], eta_array, window_array, t_sim,matlab_out=matlab_out,trans_end=0,n_rel=n_rel,B=1,b=1,m=(0),M=(1+0.5),plot_per_rel=True,output_dir='./matlab_plotting',frame_flag=True)
     elif choice==2:
         plot_energy_precision_trade_off(path, eta_array, window_array, t_sim,trans_end=trans_end_array,start_rel=1,realization_number=1)
     else:

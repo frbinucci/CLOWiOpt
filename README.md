@@ -67,9 +67,7 @@ PyTorch + CUDA note: this repo expects a CUDA-enabled PyTorch install (choose th
 ### 3) Optional: solver
 
 Some experiments may rely on a commercial solver (e.g., **MOSEK**) to solve the per-slot optimization (mixed-integer / convex).
-If you don’t have it, you can:
-- switch to an open-source alternative (if supported by this repo), or
-- run simplified baselines / heuristics.
+If you don’t have it, you can switch to an open-source alternative by modifying the .yaml configuration file (see below). 
 
 ---
 

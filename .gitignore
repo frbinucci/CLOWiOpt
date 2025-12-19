@@ -2,3 +2,8 @@
 __pycache__/
 *.py[cod]
 *$py.class
+
+.venv/
+
+run_sim_minimal_topology.bat
+run_lyapunov_sim.bat

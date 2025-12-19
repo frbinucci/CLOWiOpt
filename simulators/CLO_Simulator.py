@@ -153,6 +153,8 @@ if __name__=='__main__':
 
     alpha = cfg["reliability"]["alpha"]
 
+    dataset_path = cfg["path"]["dataset_path"]
+
     for n_rel in range(1,n_realizations+1):
 
         if not os.path.exists(data_output_dir):
@@ -210,7 +212,7 @@ if __name__=='__main__':
                 cardinality_predictor = None
             cardinality_predictors[n_layers] = cardinality_predictor
 
-        system_status = SystemStatus(t_sim=t_sim,N_users=N_users,window_size=a_crc_refresh_freq)
+        system_status = SystemStatus(t_sim=t_sim,N_users=N_users,window_size=a_crc_refresh_freq,dataset_path=dataset_path)
 
         system_status.cardinality_surrogate = cardinality_predictors
         system_status.learning_models = learning_models

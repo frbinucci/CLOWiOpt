@@ -48,6 +48,9 @@ if __name__=='__main__':
     parser.add_argument("--init_seed",type=int,default=None,help="Simulation seed")
     parser.add_argument("--init_sim_index",type=int,default=None,help='Init sim. index')
 
+    parser.add_argument("--dataset_path",type=str,default=None,help='Dataset path')
+
+
 
     #Network Constraints
     parser.add_argument("--transmission_constraints",type=int,default=1,help='Transmission Constraints (common for all the users)')
@@ -108,8 +111,7 @@ if __name__=='__main__':
 
     if args.user_indexes is not None: cfg["network"]["user_indexes"] = args.user_indexes
 
-
-
+    if args.dataset_path is not None: cfg["path"]["dataset_path"] = args.dataset_path
 
 
     V = cfg["optimizer"]["V"]
@@ -151,6 +153,8 @@ if __name__=='__main__':
 
     fnr_step_sizes = cfg["reliability"]["fnr_step_sizes"]
     alpha = cfg["reliability"]["alpha"]
+
+    dataset_path = cfg["path"]["dataset_path"]
 
     for n_rel in range(1,n_realizations+1):
 
@@ -214,7 +218,7 @@ if __name__=='__main__':
                 cardinality_predictor = None
             cardinality_predictors[n_layers] = cardinality_predictor
 
-        system_status = SystemStatus(t_sim=t_sim,N_users=N_users,window_size=a_crc_refresh_freq)
+        system_status = SystemStatus(t_sim=t_sim,N_users=N_users,window_size=a_crc_refresh_freq,dataset_path=dataset_path)
 
         system_status.cardinality_surrogate = cardinality_predictors
         system_status.learning_models = learning_models

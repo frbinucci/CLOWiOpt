@@ -108,6 +108,8 @@ class SystemStatus:
         self.virtual_node_queues = kwargs.get('virtual_node_queues',None)
         self.place_holder = kwargs.get('place_holder',0)
 
+        self.dataset_path = kwargs.get('dataset_path',None)
+
         for n in range(self.N_users):
             self.non_conformity_scores_list.append(list())
         for n in range(self.N_users):
@@ -286,16 +288,13 @@ class SystemStatus:
     def init_iterator(self):
         if self.dataset_loader==None:
 
-            validation_set = CarSegmentationDataset('../datasets/preprocessing_scripts/build_adaptive_crc_dataset/compressed_train_split/images/validation/data',
-                                                                                                     '../datasets/preprocessing_scripts/build_adaptive_crc_dataset/compressed_train_split/images/validation/labels')
-            test_set =  CarSegmentationDataset('../datasets/preprocessing_scripts/build_adaptive_crc_dataset/compressed_train_split/images/test/data',
-                                                                                                     '../datasets/preprocessing_scripts/build_adaptive_crc_dataset/compressed_train_split/images/test/labels')
+            validation_set = CarSegmentationDataset(f'{self.dataset_path}/images/validation/data',
+                                                                                                     f'{self.dataset_path}/images/validation/labels')
+            test_set =  CarSegmentationDataset(f'{self.dataset_path}/images/test/data',
+                                                                                                     f'{self.dataset_path}/images/test/labels')
             train_dev_sets = torch.utils.data.ConcatDataset([validation_set, test_set])
             print(f'Dataset length {len(train_dev_sets)}')
             self.dataset_loader = torch.utils.data.DataLoader(train_dev_sets,batch_size=1)
-
-            #self.dataset_loader = torch.utils.data.DataLoader(CarSegmentationDataset('../datasets/preprocessing_scripts/build_adaptive_crc_dataset/compressed_train_split/images/validation/data',
-            #                                                                                         '../datasets/preprocessing_scripts/build_adaptive_crc_dataset/compressed_train_split/images/validation/labels'),batch_size=1)
         self.dataset_iterator = iter(self.dataset_loader)
 
     def print_queue_status(self):

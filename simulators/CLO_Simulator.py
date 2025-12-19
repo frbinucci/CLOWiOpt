@@ -16,7 +16,7 @@ from tools import load_cfg, build_matrices, generate_network, print_percentage_b
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from optimizers.CLO_Optimizer import solve_instantaneous_opt_problem
 from utils.simulation_results import Simulation
-from utils.system_status import SystemStatus
+from simulators.system_status import SystemStatus
 import time
 
 import warnings

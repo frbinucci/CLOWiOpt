@@ -14,7 +14,7 @@ import torch
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from optimizers.LO_Optimizer import solve_instantaneous_opt_problem
 from utils.simulation_results import Simulation
-from utils.system_status import SystemStatus
+from simulators.system_status import SystemStatus
 from tools import *
 import time
 

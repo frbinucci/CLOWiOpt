@@ -28,18 +28,18 @@ We consider a network of edge devices (EDs) that offload data units to edge/clou
 
 ```text
 .
-├── configs/                  # YAML/JSON configs for experiments
-├── data/                     # (Optional) dataset symlinks / manifests (do not commit raw data)
-├── notebooks/                # analysis / plotting notebooks
-├── src/
-│   ├── algorithms/           # CLO, LO baselines
-│   ├── models/               # segmentation models, wrappers
-│   ├── sim/                  # network simulator, channel models, queues
-│   ├── solvers/              # MOSEK / alternatives (optional)
-│   ├── metrics/              # FNR, precision, cost metrics
-│   └── main.py               # entry point
-├── scripts/                  # run sweeps, reproduce plots
-├── results/                  # generated logs/plots (gitignored)
+├── configs/                  # YAML config for experiments
+├── optimizers/               # LO/CLO Network optimizers (cvx)
+├── simulators/               # Simulation scripts
+│   ├──CLO_Simulator.py
+│   ├──LO_Simulator.py
+│   ├──system_status.py
+│   └──tools.py
+├── utils/
+│   ├── learning_models/      # Inference models deployed in the network
+│   ├── precision_predictors/ # Precision predictors (for resource allocation)
+│   ├── dataset.py            # Dataset handlers
+│   ├── simulation_results.py # Simulation data object
 ├── requirements.txt
 └── README.md
 

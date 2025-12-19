@@ -154,7 +154,7 @@ if __name__=='__main__':
     fnr_step_sizes = cfg["reliability"]["fnr_step_sizes"]
     alpha = cfg["reliability"]["alpha"]
 
-    dataset_path = cfg["path"]["dataset_path"]
+    dataset_path = cfg["paths"]["dataset_path"]
 
     for n_rel in range(1,n_realizations+1):
 

@@ -42,7 +42,7 @@ We consider a network of edge devices (EDs) that offload data units to edge/clou
 │   ├── simulation_results.py # Simulation data object
 ├── requirements.txt
 └── README.md
-
+```
 ## Installation
 
 ### 1) Create a virtual environment

@@ -49,6 +49,8 @@ We consider a network of edge devices (EDs) that offload data units to edge/clou
 
 ```bash
 python -m venv .venv
+```
+```bash
 # Linux/macOS
 source .venv/bin/activate
 ```

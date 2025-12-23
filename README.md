@@ -50,6 +50,8 @@ We consider a network of edge devices (EDs) that offload data units to edge/clou
 ```bash
 python -m venv .venv
 # Linux/macOS
+```
+```powershell
 source .venv/bin/activate
 # Windows
 .venv\Scripts\activate

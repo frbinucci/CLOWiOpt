@@ -6,7 +6,7 @@
 
 This repository contains code to reproduce experiments presented in:
 
-- F. Binucci, O. Simeone, and P. Banelli,
+F. Binucci, O. Simeone, and P. Banelli,
 **Resource Management for Edge-Assisted Learning with Deterministic Reliability Constraints**. 
 *Proc. 23rd International Symposium on Modeling and Optimization in Mobile, Ad Hoc, and Wireless Networks (WiOpt)*, Linkoping, Sweden, 2025, pp. 1-6,
 

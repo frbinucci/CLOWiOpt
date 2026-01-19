@@ -154,48 +154,6 @@ inference:
 
 ---
 
-## Reproducing the paper-style figures (template)
-
-- **Energy vs Precision trade-off**: run sweeps over `eta`, average metrics after convergence.
-- **Reliability over time**: plot long-term reliability loss (e.g., FNR) across time for multiple random seeds/runs, comparing CLO vs LO.
-
-Example sweep:
-
-```bash
-bash scripts/sweep_eta.sh --algo clo --etas 0.2 0.4 0.6 0.8
-bash scripts/sweep_eta.sh --algo lo  --etas 0.2 0.4 0.6 0.8
-```
-
----
-
-## Notes on segmentation models
-
-This repo uses `segmentation_models_pytorch` for segmentation architectures and encoders.
-See `requirements.txt` and `src/models/` for details.
-
----
-
-## Citing
-
-If you use this code in academic work, please cite the related paper:
-
-```bibtex
-@inproceedings{binucci2025clo,
-  title   = {Resource Management for Edge-Assisted Learning with Deterministic Reliability Constraints},
-  author  = {Binucci, Francesco and Simeone, Osvaldo and Banelli, Paolo},
-  year    = {2025},
-  note    = {See accompanying paper / proceedings},
-}
-```
-
----
-
-## Acknowledgements
-
-This work builds on research supported by multiple funding programs/projects (see paper for full details).
-
----
-
 ## Contributing
 
 Contributions are welcome.
@@ -208,14 +166,12 @@ Contributions are welcome.
 
 ## License
 
-Specify your license here (e.g., MIT / Apache-2.0).  
-See `LICENSE`.
+MIT Lincense
 
 ---
 
 ## Contact
 
-- Maintainer: **[Your Name]**
-- Email: **[your.email@domain]**
-- Lab / Institution: **[Your Lab]**
+- Maintainer: **Francesco Binucci**
+- Email: **francesco.binucci@cnit.it**
 

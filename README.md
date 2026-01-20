@@ -34,6 +34,7 @@ We consider a network of edge devices (EDs) that offload data units to edge/clou
 ```text
 .
 ├── configs/                  # YAML config for experiments
+├── libs/                     # Dataset management tools (from CLODatasetManagement repo)
 ├── optimizers/               # LO/CLO Network optimizers (cvx)
 ├── simulators/               # Simulation scripts
 │   ├──CLO_Simulator.py
@@ -91,7 +92,9 @@ Otherwise, you can directly run the batch script, using the script dedicated to 
 
 For Windows users, please use the script "dataset_manager.bat"
 
-### 2) Create a virtual environment
+Once you have converted and split the dataset in a proper folder (e.g., ./dataset), please, be sure to configure the dataset path in the .yaml configuration file (see below). 
+
+### 3) Create a virtual environment
 
 ```bash
 python -m venv .venv
@@ -105,7 +108,7 @@ source .venv/bin/activate
 .venv\Scripts\activate
 ```
 
-### 3) Install dependencies
+### 4) Install dependencies
 
 ```bash
 pip install --upgrade pip
@@ -114,23 +117,10 @@ pip install -r requirements.txt
 
 PyTorch + CUDA note: this repo expects a CUDA-enabled PyTorch install (choose the CUDA version that matches your system/driver). If you use a `requirements.txt` approach with `--extra-index-url`, make sure it points to the correct CUDA wheel index.
 
-### 4) Optional: solver
+### 5) Optional: solver
 
 Some experiments may rely on a commercial solver (e.g., **MOSEK**) to solve the per-slot optimization (mixed-integer / convex).
 If you don’t have it, you can switch to an open-source alternative by modifying the .yaml configuration file (see below). 
-
----
-
-## Data
-
-Experiments may use **Cityscapes** and a **binary segmentation** variant (e.g., focusing on “car” objects).
-You must obtain the dataset yourself (license-restricted) and place it under:
-
-```text
-data/cityscapes/
-```
-
-or configure the path via `configs/*.yaml`.
 
 ---
 
@@ -191,6 +181,14 @@ inference:
   encoder_edge: mobilenetv3
   encoder_server: resnet50
   image_size: [256, 256]
+
+paths:
+  theta_lut: utils/LUTs/theta_lut.npy
+  segmentation_ckpt_tpl: utils/learning_models/D{d}/segmentation_network
+  predictor_ckpt_tpl: utils/precision_predictors/D{d}/precision_predictor
+  data_output_dir: ./sim_res
+  dataset_path: ./dataset/cityscapes
+
 ```
 
 ---

@@ -56,7 +56,7 @@ This repository relies on an additional set of scripts to work with the Cityscap
 When cloning the project, make sure to also fetch the submodules (e.g., using --recurse-submodules) and do it within your virtual environment.
 
 ```bash
-git clone --recurse-submodules https://github.com/ORG/repoA.git
+git clone --recurse-submodules https://github.com/frbinucci/CLOWiOpt/
 ```
 
 ### 2) Dataset management

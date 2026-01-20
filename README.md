@@ -194,7 +194,7 @@ Contributions are welcome.
 
 ## License
 
-MIT Lincense
+Licensed under the MIT License. See LICENSE.
 
 ---
 

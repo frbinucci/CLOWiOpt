@@ -40,7 +40,7 @@ class CarSegmentationDataset(Dataset):
         self.target_size = target_size
         self.data_list = list()
 
-        self.debug_mode = kwargs.get('debug_mode',True)
+        self.debug_mode = kwargs.get('debug_mode',False)
         self.break_point = kwargs.get('break_point',100)
 
         # Collect all image and json file paths

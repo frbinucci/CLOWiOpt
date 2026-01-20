@@ -34,6 +34,7 @@ We consider a network of edge devices (EDs) that offload data units to edge/clou
 ```text
 .
 ├── configs/                  # YAML config for experiments
+├── libs/                     # Dataset management tools (from CLODatasetManagement repo)
 ├── optimizers/               # LO/CLO Network optimizers (cvx)
 ├── simulators/               # Simulation scripts
 │   ├──CLO_Simulator.py
@@ -68,18 +69,32 @@ All the experiments are performed on the [Cityscapes](https://www.cityscapes-dat
 
 Unzip them on your machine, and install the library obtained from the repository [CLODatasetManagement](https://github.com/frbinucci/CLODatasetManagament)
 
+#### Manual dataset handling 
+
 ```bash
-pip install -e libs/CLODatasetManagement
+pip install -e libs/
 ```
 
 Then convert the dataset in jpg format (to reduce file occupation) and launch the script to split it
 
 ```bash
-python libs/CLODatasetManagement/scripts/convert_png_to_jpg.py --source-dir ... --target-dir ...
-python libs/CLODatasetManagement/scripts/split_dataset.py --data-dir ... --labels-dir ... --output-dir ... --train 80 --val 10 --test 10 --seed 0
+python libs/scripts/convert_png_to_jpg.py --source-dir ... --target-dir ...
+python libs/scripts/split_dataset.py --data-dir ... --labels-dir ... --output-dir ... --train 80 --val 10 --test 10 --seed 0
+```
+#### Automatic dataset handling 
+
+Otherwise, you can directly run the batch script, using the script dedicated to your OS (Windows/Linux)
+
+```bash
+#Linux
+./dataset_manager.sh --images_zip <path_to_images> --labels-zip <path_to_labels> --out ./dataset --quality 75
 ```
 
-### 2) Create a virtual environment
+For Windows users, please use the script "dataset_manager.bat"
+
+Once you have converted and split the dataset in a proper folder (e.g., ./dataset), please, be sure to configure the dataset path in the .yaml configuration file (see below). 
+
+### 3) Create a virtual environment
 
 ```bash
 python -m venv .venv
@@ -93,7 +108,7 @@ source .venv/bin/activate
 .venv\Scripts\activate
 ```
 
-### 3) Install dependencies
+### 4) Install dependencies
 
 ```bash
 pip install --upgrade pip
@@ -102,50 +117,26 @@ pip install -r requirements.txt
 
 PyTorch + CUDA note: this repo expects a CUDA-enabled PyTorch install (choose the CUDA version that matches your system/driver). If you use a `requirements.txt` approach with `--extra-index-url`, make sure it points to the correct CUDA wheel index.
 
-### 4) Optional: solver
+### 5) Optional: solver
 
 Some experiments may rely on a commercial solver (e.g., **MOSEK**) to solve the per-slot optimization (mixed-integer / convex).
 If you don’t have it, you can switch to an open-source alternative by modifying the .yaml configuration file (see below). 
 
 ---
 
-## Data
+## Quickstart and Plotting 
 
-Experiments may use **Cityscapes** and a **binary segmentation** variant (e.g., focusing on “car” objects).
-You must obtain the dataset yourself (license-restricted) and place it under:
-
-```text
-data/cityscapes/
-```
-
-or configure the path via `configs/*.yaml`.
-
----
-
-## Quickstart
-
-### Run a single simulation
+You can run the simulations using the scripts below:
 
 ```bash
-python -m src.main \
-  --config configs/default.yaml \
-  --algo clo
+#Linux
+./run_sim_linux.sh <output_dir> simulators/CLO_Simulator.py <realization> <eta_list> #Run a Conformal Lyapunov Optimization Simulation
+./run_sim_linux.sh <output_dir> simulators/LO_Simulator.py <realization> <eta_list> #Run a Lyapunov Optimization Simulation
 ```
 
-### Run baseline LO
+If you are on Windows, use run_sim_windows.bat instead.
 
-```bash
-python -m src.main \
-  --config configs/default.yaml \
-  --algo lo
-```
-
-### Plot results
-
-```bash
-python scripts/plot_tradeoff.py --input results/exp_*/metrics.json
-python scripts/plot_reliability.py --input results/exp_*/timeseries.json
-```
+To reproduce the figures presented in the paper, run WiOptPlotting.py and follow the instructions shown in the command-line interface (CLI).
 
 ---
 
@@ -179,6 +170,14 @@ inference:
   encoder_edge: mobilenetv3
   encoder_server: resnet50
   image_size: [256, 256]
+
+paths:
+  theta_lut: utils/LUTs/theta_lut.npy
+  segmentation_ckpt_tpl: utils/learning_models/D{d}/segmentation_network
+  predictor_ckpt_tpl: utils/precision_predictors/D{d}/precision_predictor
+  data_output_dir: ./sim_res
+  dataset_path: ./dataset/cityscapes
+
 ```
 
 ---
@@ -195,7 +194,7 @@ Contributions are welcome.
 
 ## License
 
-MIT Lincense
+Licensed under the MIT License. See LICENSE.
 
 ---
 

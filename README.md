@@ -50,7 +50,36 @@ We consider a network of edge devices (EDs) that offload data units to edge/clou
 ```
 ## Installation
 
-### 1) Create a virtual environment
+### 1) Clone repository in your environment
+
+This repository relies on an additional set of scripts to work with the Cityscapes dataset.
+When cloning the project, make sure to also fetch the submodules (e.g., using --recurse-submodules) and do it within your virtual environment.
+
+```bash
+git clone --recurse-submodules https://github.com/ORG/repoA.git
+```
+
+### 2) Dataset management
+
+All the experiments are performed on the [Cityscapes](https://www.cityscapes-dataset.com/) dataset. Download:
+
+- leftImg8bit_trainextra.zip (44GB) [md5]
+- gtCoarse.zip (1.3GB) [md5]
+
+Unzip them on your machine, and install the library obtained from the repository [CLODatasetManagement](https://github.com/frbinucci/CLODatasetManagament)
+
+```bash
+pip install -e libs/CLODatasetManagement
+```
+
+Then convert the dataset in jpg format (to reduce file occupation) and launch the script to split it
+
+```bash
+python libs/CLODatasetManagement/scripts/convert_png_to_jpg.py --source-dir ... --target-dir ...
+python libs/CLODatasetManagement/scripts/split_dataset.py --data-dir ... --labels-dir ... --output-dir ... --train 80 --val 10 --test 10 --seed 0
+```
+
+### 2) Create a virtual environment
 
 ```bash
 python -m venv .venv
@@ -64,7 +93,7 @@ source .venv/bin/activate
 .venv\Scripts\activate
 ```
 
-### 2) Install dependencies
+### 3) Install dependencies
 
 ```bash
 pip install --upgrade pip
@@ -73,7 +102,7 @@ pip install -r requirements.txt
 
 PyTorch + CUDA note: this repo expects a CUDA-enabled PyTorch install (choose the CUDA version that matches your system/driver). If you use a `requirements.txt` approach with `--extra-index-url`, make sure it points to the correct CUDA wheel index.
 
-### 3) Optional: solver
+### 4) Optional: solver
 
 Some experiments may rely on a commercial solver (e.g., **MOSEK**) to solve the per-slot optimization (mixed-integer / convex).
 If you don’t have it, you can switch to an open-source alternative by modifying the .yaml configuration file (see below). 

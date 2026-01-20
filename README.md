@@ -68,6 +68,8 @@ All the experiments are performed on the [Cityscapes](https://www.cityscapes-dat
 
 Unzip them on your machine, and install the library obtained from the repository [CLODatasetManagement](https://github.com/frbinucci/CLODatasetManagament)
 
+#### Manual dataset handling 
+
 ```bash
 pip install -e libs/
 ```
@@ -75,9 +77,19 @@ pip install -e libs/
 Then convert the dataset in jpg format (to reduce file occupation) and launch the script to split it
 
 ```bash
-python libs/CLODatasetManagement/scripts/convert_png_to_jpg.py --source-dir ... --target-dir ...
-python libs/CLODatasetManagement/scripts/split_dataset.py --data-dir ... --labels-dir ... --output-dir ... --train 80 --val 10 --test 10 --seed 0
+python libs/scripts/convert_png_to_jpg.py --source-dir ... --target-dir ...
+python libs/scripts/split_dataset.py --data-dir ... --labels-dir ... --output-dir ... --train 80 --val 10 --test 10 --seed 0
 ```
+#### Automatic dataset handling 
+
+Otherwise, you can directly run the batch script, using the script dedicated to your OS (Windows/Linux)
+
+```bash
+#Linux
+./dataset_manager.sh --images_zip <path_to_images> --labels-zip <path_to_labels> --out ./dataset --quality 75
+```
+
+For Windows users, please use the script "dataset_manager.bat"
 
 ### 2) Create a virtual environment
 

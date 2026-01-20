@@ -69,7 +69,7 @@ All the experiments are performed on the [Cityscapes](https://www.cityscapes-dat
 Unzip them on your machine, and install the library obtained from the repository [CLODatasetManagement](https://github.com/frbinucci/CLODatasetManagament)
 
 ```bash
-pip install -e libs/CLODatasetManagement
+pip install -e libs/
 ```
 
 Then convert the dataset in jpg format (to reduce file occupation) and launch the script to split it

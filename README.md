@@ -124,30 +124,19 @@ If you don’t have it, you can switch to an open-source alternative by modifyin
 
 ---
 
-## Quickstart
+## Quickstart and Plotting 
 
-### Run a single simulation
-
-```bash
-python -m src.main \
-  --config configs/default.yaml \
-  --algo clo
-```
-
-### Run baseline LO
+You can run the simulations using the scripts below:
 
 ```bash
-python -m src.main \
-  --config configs/default.yaml \
-  --algo lo
+#Linux
+./run_sim_linux.sh <output_dir> simulators/CLO_Simulator.py <realization> <eta_list> #Run a Conformal Lyapunov Optimization Simulation
+./run_sim_linux.sh <output_dir> simulators/LO_Simulator.py <realization> <eta_list> #Run a Lyapunov Optimization Simulation
 ```
 
-### Plot results
+If you are on Windows, use run_sim_windows.bat instead.
 
-```bash
-python scripts/plot_tradeoff.py --input results/exp_*/metrics.json
-python scripts/plot_reliability.py --input results/exp_*/timeseries.json
-```
+To reproduce the figures presented in the paper, run WiOptPlotting.py and follow the instructions shown in the command-line interface (CLI).
 
 ---
 

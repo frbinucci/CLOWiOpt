@@ -1,6 +1,0 @@
-[submodule "CLODatasetManagement"]
-	path = CLODatasetManagement
-	url = https://github.com/frbinucci/CLODatasetManagement
-[submodule "libs"]
-	path = libs
-	url = https://github.com/frbinucci/CLODatasetManagement

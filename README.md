@@ -75,19 +75,21 @@ Unzip them on your machine, and install the library obtained from the repository
 pip install -e libs/
 ```
 
-Then convert the dataset in jpg format (to reduce file occupation) and launch the script to split it
+Then convert the dataset in jpg format (to reduce file occupation) and launch the script to split it. 
+**Note that, the split ratios considered in simulations is 50% for training, 25% for test, and 25% for validation.** 
 
 ```bash
-python libs/scripts/convert_png_to_jpg.py --source-dir ... --target-dir ...
-python libs/scripts/split_dataset.py --data-dir ... --labels-dir ... --output-dir ... --train 80 --val 10 --test 10 --seed 0
+python libs/scripts/convert_png_to_jpg.py --source-dir <path_to_images> --target-dir <path_to_labels>
+python libs/scripts/split_dataset.py --data-dir <path_to_images> --labels-dir <path_to_labels> --output-dir <split_dataset_path> --train 50 --val 25 --test 25 --seed 0 --quality 75
 ```
+
 #### Automatic dataset handling 
 
-Otherwise, you can directly run the batch script, using the script dedicated to your OS (Windows/Linux)
+Otherwise, you can directly run the batch script, using the script dedicated to your OS (Windows/Linux). 
 
 ```bash
 #Linux
-./dataset_manager.sh --images_zip <path_to_images> --labels-zip <path_to_labels> --out ./dataset --quality 75
+./dataset_manager.sh --images_zip <path_to_images> --labels-zip <path_to_labels> --out <split_dataset_path> --quality 75 --train 50 --test 25 -- val 25
 ```
 
 For Windows users, please use the script "dataset_manager.bat"

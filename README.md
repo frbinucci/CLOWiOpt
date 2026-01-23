@@ -37,6 +37,7 @@ We consider a network of edge devices (EDs) that offload data units to edge/clou
 ├── libs/                     # Dataset management tools (from CLODatasetManagement repo)
 ├── optimizers/               # LO/CLO Network optimizers (cvx)
 ├── simulators/               # Simulation scripts
+├── dataset/                  # Dataset folder
 │   ├──CLO_Simulator.py
 │   ├──LO_Simulator.py
 │   ├──system_status.py
@@ -85,11 +86,14 @@ python libs/scripts/split_dataset.py --data-dir <path_to_images> --labels-dir <p
 
 #### Automatic dataset handling 
 
-Otherwise, you can directly run the batch script, using the script dedicated to your OS (Windows/Linux). 
+Alternatively, run the provided script for your operating system (Windows/Linux). To match the suggested directory layout, set the --out argument exactly as in the example below.
 
 ```bash
 #Linux
-./libs/dataset_manager.sh --images_zip <path_to_images> --labels-zip <path_to_labels> --out <split_dataset_path> --quality 75 --train 50 --test 25 -- val 25
+#Go into the libs folder to run the script
+cd libs/
+
+./libs/dataset_manager.sh --images_zip <path_to_images> --labels-zip <path_to_labels> --out ../dataset --quality 75 --train 50 --test 25 -- val 25
 ```
 
 For Windows users, please use the script "dataset_manager.bat"

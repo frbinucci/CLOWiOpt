@@ -89,7 +89,7 @@ Otherwise, you can directly run the batch script, using the script dedicated to 
 
 ```bash
 #Linux
-./dataset_manager.sh --images_zip <path_to_images> --labels-zip <path_to_labels> --out <split_dataset_path> --quality 75 --train 50 --test 25 -- val 25
+./libs/dataset_manager.sh --images_zip <path_to_images> --labels-zip <path_to_labels> --out <split_dataset_path> --quality 75 --train 50 --test 25 -- val 25
 ```
 
 For Windows users, please use the script "dataset_manager.bat"

@@ -61,6 +61,14 @@ When cloning the project, make sure to also fetch the submodules (e.g., using --
 git clone --recurse-submodules https://github.com/frbinucci/CLOWiOpt/
 ```
 
+If your Git version stops the checkout due to an “active post-checkout hook found during git clone”, you can re-run the clone with clone protection disabled for this command only:
+
+```bash
+cd CLOWiOpt
+git restore --source=HEAD :/
+git submodule update --init --recursive
+```
+
 ### 2) Dataset management
 
 All the experiments are performed on the [Cityscapes](https://www.cityscapes-dataset.com/) dataset. Download:

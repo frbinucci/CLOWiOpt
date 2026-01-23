@@ -93,7 +93,7 @@ Alternatively, run the provided script for your operating system (Windows/Linux)
 #Go into the libs folder to run the script
 cd libs/
 
-./libs/dataset_manager.sh --images_zip <path_to_images> --labels-zip <path_to_labels> --out ../dataset --quality 75 --train 50 --test 25 -- val 25
+./libs/dataset_manager.sh --images-zip <path_to_images> --labels-zip <path_to_labels> --out ../dataset --quality 75 --train 50 --test 25 -- val 25
 ```
 
 For Windows users, please use the script "dataset_manager.bat"

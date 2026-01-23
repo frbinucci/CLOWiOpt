@@ -145,7 +145,7 @@ if __name__=='__main__':
     torch.manual_seed(init_seed)
 
     gamma = cfg["reliability"]["gamma"]
-    init_queues = cfg["reliability"]["fnr_virtual_queues_init"]
+    theta_init = cfg["reliability"]["theta_init"]
 
     data_unit_bits = cfg["task"]["data_unit_bits"]
     image_size = cfg["task"]["image_size"]
@@ -256,7 +256,7 @@ if __name__=='__main__':
         system_status.learning_models = learning_models
         system_status.gamma = gamma*np.ones(N_users)
         system_status.reliability_constraints = alpha*np.ones(N_users)
-        system_status.alpha_array = init_queues*np.ones(N_users)
+        system_status.alpha_array = theta_init*np.ones(N_users)
         system_status.dynamic_error_tracker = np.zeros(N_users)
         system_status.dynamic_prediction_counter = np.zeros(N_users)
 
@@ -303,8 +303,8 @@ if __name__=='__main__':
         print(f"Simulating eta ={eta}...")
         print("\n")
         print(f"Reliability Constraint: {args.alpha}")
-        print(f'Theta start: {args.fixed_threshold}')
-        print(f'Gamma: {args.gamma}')
+        print(f'Theta start: {theta_init}')
+        print(f'Gamma: {gamma}')
         print(f'V: {args.V}')
         print("\n")
         system_status.init_queues()

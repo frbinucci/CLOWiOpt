@@ -37,6 +37,7 @@ reliability:
   alpha: 0.12
   fnr_step_sizes: 0.5
   fnr_virtual_queues_init: 0.5
+  theta_init: 0.5
   window_length: 1
   gamma: 0.5
 

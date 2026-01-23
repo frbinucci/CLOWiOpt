@@ -64,7 +64,7 @@ paths:
   segmentation_ckpt_tpl: utils/learning_models/D{d}/segmentation_network
   predictor_ckpt_tpl: utils/precision_predictors/D{d}/precision_predictor
   data_output_dir: ./sim_res
-  dataset_path: ./dataset/cityscapes
+  dataset_path: ./dataset/
 
 threshold:
   fixed_index: null     # es. 4 se vuoi fissare, altrimenti null

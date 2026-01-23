@@ -301,10 +301,10 @@ class SystemStatus:
     def init_iterator(self):
         if self.dataset_loader==None:
 
-            validation_set = CarSegmentationDataset(f'{self.dataset_path}/images/validation/data',
-                                                                                                     f'{self.dataset_path}/images/validation/labels')
-            test_set =  CarSegmentationDataset(f'{self.dataset_path}/images/test/data',
-                                                                                                     f'{self.dataset_path}/images/test/labels')
+            validation_set = CarSegmentationDataset(f'{self.dataset_path}/validation/data',
+                                                                                                     f'{self.dataset_path}/validation/labels')
+            test_set =  CarSegmentationDataset(f'{self.dataset_path}/test/data',
+                                                                                                     f'{self.dataset_path}/test/labels')
             train_dev_sets = torch.utils.data.ConcatDataset([validation_set, test_set])
             print(f'Dataset length {len(train_dev_sets)}')
             self.dataset_loader = torch.utils.data.DataLoader(train_dev_sets,batch_size=1)

@@ -8,3 +8,4 @@ __pycache__/
 run_sim_minimal_topology.bat
 run_lyapunov_sim.bat
 .idea/
+dataset/

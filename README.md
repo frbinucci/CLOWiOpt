@@ -159,8 +159,6 @@ The script also supports plotting new simulation results via CLI subcommands.
 ***Plot the precision vs reliability trade-off***
 
 ```bash
-#Plotting the precision-reliability trade-off
-
 python plotting.py tradeoff \
   -d <simulation_output_dir_1> <simulation_output_dir_2> <simulation_output_dir_3> \
   -e <eta_1> <eta_2> <eta_3> \

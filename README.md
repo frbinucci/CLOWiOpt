@@ -142,8 +142,44 @@ You can run the simulations using the scripts below:
 
 If you are on Windows, use run_sim_windows.bat instead.
 
-To reproduce the figures presented in the paper, run WiOptPlotting.py and follow the instructions shown in the command-line interface (CLI).
+## Plotting
 
+### Reproduce the paper figures (interactive mode)
+
+To reproduce the figures presented in the paper, run `plotting.py` with no arguments and follow the prompts shown in the command-line interface (CLI):
+
+```bash
+python plotting.py
+```
+
+### Plot new simulation results (CLI mode)
+
+The script also supports plotting new simulation results via CLI subcommands.
+
+***Plot the precision vs reliability trade-off***
+
+```bash
+#Plotting the precision-reliability trade-off
+
+python plotting.py tradeoff \
+  -d <simulation_output_dir_1> <simulation_output_dir_2> <simulation_output_dir_3> \
+  -e <eta_1> <eta_2> <eta_3> \
+  -w <window_size> \
+  --t-sim <simulation_time>
+```
+
+***Plot realiability over time*** 
+```bash
+python plot_script.py time \
+  -d <simulation_output_dir> \
+  -e <eta_1> <eta_2> <eta_3> \
+  -w <window_size> \
+  --t-sim <simulation_time> \
+  --n-rel <num_realizations> \
+  --frame-flag \
+  --plot-per-rel
+
+```
 ---
 
 ## Configuration
@@ -151,38 +187,77 @@ To reproduce the figures presented in the paper, run WiOptPlotting.py and follow
 Example `configs/default.yaml` (template):
 
 ```yaml
-seed: 0
+simulation:
+  t_sim: 5000
+  tau: 0.05
+  n_realizations: 1
+  seed: 1
+  init_sim_index: 1
+  optimizer: MOSEK
 
-frame_size_S: 10
-V: 200
-eta: 0.8
-
-reliability:
-  r_k: [0.14, 0.14, 0.14]
-  gamma_k: [0.5, 0.5, 0.5]
-  theta_init: [0.5, 0.5, 0.5]
+traffic:
+  min_arrival_rate: 0.4
+  max_arrival_rate: 0.8
+  arrival_rate_refresh_rate: 100
 
 network:
-  K: 3
-  topology: single_hop
-  slot_duration_s: 0.05
-  bandwidth_hz: 20000000
-  pathloss_db: 90
-  pmax_w: 3.5
-  task_arrival_lambda: [0.4, 0.8, 0.4]
+  N_nodes: 4
+  N_users: 3
+  links:                # (i, j, pathloss_linear)
+    - [0, 3, 1.0e-9]
+    - [1, 3, 1.0e-9]
+    - [2, 3, 1.0e-9]
+  transmission_constraints: 1
+  computational_constraints: 3
+  Bw: 2.0e7
+  pmax: 3.5
+  N0: 3.98e-21
+  user_indexes: [0,1,2,3]
 
-inference:
-  task: segmentation
-  encoder_edge: mobilenetv3
-  encoder_server: resnet50
-  image_size: [256, 256]
+task:
+  data_unit_bits: 32
+  image_size: 196608        # 3*256*256
+
+optimizer:
+  V: 10.0
+  eta: 0.0
+
+reliability:
+  alpha: 0.12
+  fnr_step_sizes: 0.5
+  fnr_virtual_queues_init: 0.5
+  theta_init: 0.5
+  window_length: 1
+  gamma: 0.5
+
+models:
+  device: cuda
+  encoder_weights: imagenet
+  encoder_map:
+    "0": timm-mobilenetv3_small_minimal_100
+    "2": resnet18
+    "3": resnet50
+  encoder_pfr_predictor_map:
+    "0": timm-mobilenetv3_small_minimal_100
+    "2": mobileone_s0
+    "3": mobileone_s0
+  depth_mapping: [0, 1, 2, 3]
+  models_association:
+    "0": 0
+    "1": 0
+    "2": 0
+    "3": 3
+  model_list: ["D0", "D0", "D0", "D3"]
 
 paths:
   theta_lut: utils/LUTs/theta_lut.npy
   segmentation_ckpt_tpl: utils/learning_models/D{d}/segmentation_network
   predictor_ckpt_tpl: utils/precision_predictors/D{d}/precision_predictor
-  data_output_dir: ./sim_res
-  dataset_path: ./dataset/cityscapes
+  data_output_dir: ./simulation_results/WiOPTSimCLO15k
+  dataset_path: ./dataset/
+
+threshold:
+  fixed_index: null   
 
 ```
 

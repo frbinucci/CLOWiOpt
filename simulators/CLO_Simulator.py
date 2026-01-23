@@ -400,9 +400,8 @@ if __name__=='__main__':
         stop_time = time.strftime('%a, %d %b %Y %H:%M:%S', time.localtime())
         print(f'\nSimulation over: {stop_time}')
 
-        if system_status.enable_prediction_set_cardinality_control==True:
-            out_dir = f'{data_output_dir}/simulation_{str(float(eta))}_window_size_{a_crc_refresh_freq}_{n_rel}.pkl'
-
+        #Saving simulation
+        out_dir = f'{data_output_dir}/simulation_{str(float(eta))}_window_size_{a_crc_refresh_freq}_{n_rel}.pkl'
         with open(out_dir, 'wb') as out_file:
             pickle.dump(simulation, out_file, pickle.HIGHEST_PROTOCOL)
 
